@@ -8,8 +8,8 @@ prompt_segment() {
     local bg fg
     [[ -n $1 ]] && bg="%K{$1}" || bg="%k"
     [[ -n $2 ]] && fg="%F{$2}" || fg="%f"
-    echo -n "%{$bg%}%{$fg%} "
-    [[ -n $3 ]] && echo -n $3
+    echo -n "%{$bg%}%{$fg%}"
+    [[ -n $3 ]] && echo -nE $3
 }
 
 clearstyle() {
@@ -43,8 +43,8 @@ prompt_status() {
     local -a symbols
 
     symbols+='%(?:%{%F{green}%}:%{%F{red}%})%?'
-    [[ $UID -eq 0 ]] && symbols+='%{%F{yellow}%}r'
-    [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+='%{%F{cyan}%}j'
+    [[ $UID -eq 0 ]] && symbols+="$(prompt_segment default yellow 'r')"
+    [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="$(prompt_segment default cyan 'j')"
 
     prompt_segment default default "[$symbols$(clearstyle)]"
 }
@@ -54,22 +54,26 @@ prompt_end() {
 }
 
 build_prompt_left() {
-    clearstyle
-    prompt_user
-    prompt_pwd
-    prompt_git
-    prompt_newline
-    prompt_end
-    clearstyle
+    local prompt
+    prompt+="$(clearstyle)"
+    prompt+="$(prompt_user)"
+    prompt+=" $(prompt_pwd)"
+    prompt+=" $(prompt_git)"
+    prompt+="$(prompt_newline)"
+    prompt+="$(prompt_end)"
+    prompt+="$(clearstyle) "
+    echo -n "$prompt"
 }
 
 build_prompt_right() {
-    clearstyle
-    prompt_status
-    clearstyle
+    local prompt
+    prompt+="$(clearstyle)"
+    prompt+="$(prompt_status)"
+    prompt+="$(clearstyle)"
+    echo -n "$prompt"
 }
 
-PROMPT='$(build_prompt_left) '
+PROMPT='$(build_prompt_left)'
 RPROMPT='$(build_prompt_right)'
 
 ZSH_THEME_GIT_PROMPT_PREFIX='(git:%{%F{yellow}%}'
