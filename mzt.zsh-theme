@@ -46,7 +46,7 @@ prompt_status() {
   [[ $UID -eq 0 ]] && symbols+='%{%F{yellow}%}r'
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+='%{%F{cyan}%}j'
 
-  prompt_segment black default "[$symbols$(clearstyle)]"
+  prompt_segment default default "[$symbols$(clearstyle)]"
 }
 
 prompt_end() {
