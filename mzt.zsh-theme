@@ -40,13 +40,13 @@ prompt_newline() {
 # - are there background jobs?
 # modified from agnoster
 prompt_status() {
-  local -a symbols
+    local -a symbols
 
-  symbols+='%(?:%{%F{green}%}:%{%F{red}%})%?'
-  [[ $UID -eq 0 ]] && symbols+='%{%F{yellow}%}r'
-  [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+='%{%F{cyan}%}j'
+    symbols+='%(?:%{%F{green}%}:%{%F{red}%})%?'
+    [[ $UID -eq 0 ]] && symbols+='%{%F{yellow}%}r'
+    [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+='%{%F{cyan}%}j'
 
-  prompt_segment default default "[$symbols$(clearstyle)]"
+    prompt_segment default default "[$symbols$(clearstyle)]"
 }
 
 prompt_end() {
@@ -82,4 +82,3 @@ ZSH_THEME_GIT_PROMPT_AHEAD_REMOTE_COLOR='%{%F{green}%}'
 
 ZSH_THEME_GIT_PROMPT_BEHIND_REMOTE=' -'
 ZSH_THEME_GIT_PROMPT_BEHIND_REMOTE_COLOR='%{%F{red}%}'
-
