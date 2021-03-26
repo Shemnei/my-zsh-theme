@@ -14,6 +14,12 @@ git clone https://github.com/Shemnei/my-zsh-theme.git ${ZSH_CUSTOM}/themes/mzt
 ZSH_THEME="mzt/mzt"
 ```
 
+* To enable fish like path shrinking
+
+```text
+plugins=(shrink-path ...)
+```
+
 * Reload `~/.zshrc`
 
 ```shell

@@ -1,6 +1,8 @@
 # vim:ft=zsh ts=4 sw=4 sts=4
 # https://man.archlinux.org/man/zshmisc.1#EXPANSION_OF_PROMPT_SEQUENCES
 
+setopt prompt_subst
+
 # modified from agnoster
 prompt_segment() {
     local bg fg
@@ -18,8 +20,10 @@ prompt_user() {
     prompt_segment default blue '%n@%m'
 }
 
-prompt_cwd() {
-    prompt_segment default default '%(5~|%-1~/…/%3~|%4~)'
+prompt_pwd() {
+    local dir=$(shrink_path -f 2> /dev/null)
+    [[ -z "$dir" ]] && dir='%(5~|%-1~/../%3~|%4~)'
+    prompt_segment default default "$dir"
 }
 
 prompt_git() {
@@ -52,7 +56,7 @@ prompt_end() {
 build_prompt_left() {
     clearstyle
     prompt_user
-    prompt_cwd
+    prompt_pwd
     prompt_git
     prompt_newline
     prompt_end
@@ -78,3 +82,4 @@ ZSH_THEME_GIT_PROMPT_AHEAD_REMOTE_COLOR='%{%F{green}%}'
 
 ZSH_THEME_GIT_PROMPT_BEHIND_REMOTE=' -'
 ZSH_THEME_GIT_PROMPT_BEHIND_REMOTE_COLOR='%{%F{red}%}'
+
